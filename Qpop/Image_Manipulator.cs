@@ -45,9 +45,9 @@ public class Image_Manipulator
     public static bool Compare_Image_Section(Bitmap imgA, Bitmap imgB, Rectangle section_imgA, Rectangle section_imgB)
     {
         Bitmap croppedA = (Bitmap)imgA.Clone(section_imgA, imgA.PixelFormat);
-        croppedA.Save("CroppedA.bmp"); // del
+        //croppedA.Save("CroppedA.bmp"); // del
         Bitmap croppedB = (Bitmap)imgB.Clone(section_imgB, imgB.PixelFormat);
-        croppedB.Save("CroppedB.bmp"); // del
+        //croppedB.Save("CroppedB.bmp"); // del
         return Compare_Image(croppedA, croppedB);
     }
 }

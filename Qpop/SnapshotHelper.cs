@@ -72,8 +72,9 @@ public class SnapshotHelper
         Bitmap cropped_pic = new Bitmap(offset_x2, offset_y2);
         to_shot.ReleaseHdc(bitmap_pointer);
         to_shot.Dispose();
+        cropped_pic = (Bitmap)scrnsht_wind.Clone(crop_bounds, scrnsht_wind.PixelFormat); 
 
-        cropped_pic = (Bitmap)scrnsht_wind.Clone(crop_bounds, scrnsht_wind.PixelFormat);
+        scrnsht_wind.Dispose();
 
         try
         {

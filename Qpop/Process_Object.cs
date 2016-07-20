@@ -8,6 +8,8 @@ public class Process_Object
     static extern IntPtr OpenProcess(IntPtr dwDesiredAccess, bool bInheritHandle, IntPtr dwProcessId);
     [DllImport("Kernel32.dll")]
     static extern int TerminateProcess(IntPtr hProcess, uint uExitCode);
+    [DllImport("Kernel32.dll")]
+    static extern int GetExitCodeProcess(IntPtr hProcess, out IntPtr lpExitCode);
     private string name;
     private int pid;
     private Process act_process;
@@ -84,7 +86,7 @@ public class Process_Object
             pb1.SetPID(tmp[0].Id);
             pb1.SetMWHandle(tmp[0].MainWindowHandle);
             //Get Handle after opening process, currently only containing Terminate_Process tag
-            IntPtr tmp_hndle = OpenProcess((IntPtr)0x0001, false, (IntPtr)tmp[0].Id);
+            IntPtr tmp_hndle = OpenProcess((IntPtr)0x1F0FFF, false, (IntPtr)tmp[0].Id);
             if(tmp_hndle == null)
             {
                 System.Console.Write("Could not open process");
@@ -107,5 +109,23 @@ public class Process_Object
         is_success = TerminateProcess(this.handle, exit_code);
         if (is_success == 0) return false;
         else return true;
+    }
+    public bool IsOpen()
+    {
+        IntPtr ex_code;
+        int value;
+        unsafe
+        {
+            int success = GetExitCodeProcess(this.GetHandle(), out ex_code);
+            if (success == 0) return false;
+            value = ex_code.ToInt32();
+        }
+        if (value == 259)
+        {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 }
