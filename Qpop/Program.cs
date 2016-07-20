@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace Qpop
 {
@@ -34,8 +35,9 @@ namespace Qpop
             //End Test
 
             //Test Launcher Copy
-            SnapshotHelper.Take_Snapshot_Process(cn_process);
+            Bitmap screen = SnapshotHelper.Take_Snapshot_Process(cn_process, 491, 436, 183, 41);
             //End Test
+            
 
             System.Console.ReadLine();
         }

@@ -22,7 +22,7 @@ public class SnapshotHelper
     }
     // End borrowed
 
-    public static bool Take_Snapshot_Process(Process_Object proc)
+    public static Bitmap Take_Snapshot_Process(Process_Object proc)
     {
         int is_success = 0;
         RECT window_dimensions;
@@ -46,9 +46,10 @@ public class SnapshotHelper
         {
             System.Console.Write("\nError Saving Bitmap\n");
         }
-        return true;
+        return scrnsht_wind;
         
     }
+
 
     //For Diagnostics
     public static void Print_Process_Window_Dimensions(Process_Object proc)
