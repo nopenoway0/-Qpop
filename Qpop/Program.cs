@@ -42,12 +42,14 @@ namespace Qpop
             //End Test
 
             //Loop for test comparison of live results
-            while (true)
+            bool queue_popped = false;
+            while (!queue_popped)
             {
                 Bitmap screen = SnapshotHelper.Take_Snapshot_Process(cn_process, 491, 436, 183, 41);
                 Bitmap queue_img = new Bitmap("join.bmp");
-                Console.Write(Image_Manipulator.Compare_Image(screen, queue_img));
-                System.Threading.Thread.Sleep(2000);
+                queue_popped = Image_Manipulator.Compare_Image(screen, queue_img);
+                Console.Write(queue_popped);
+                System.Threading.Thread.Sleep(1000);
             }
             //End Test
 
