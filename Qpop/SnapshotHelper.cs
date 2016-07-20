@@ -50,6 +50,42 @@ public class SnapshotHelper
         
     }
 
+    //Allows part of the picture to be cropped out according to offsets
+    public static Bitmap Take_Snapshot_Process(Process_Object proc, int offset_x, int offset_y, int offset_x2, int offset_y2)
+    {
+        int is_success = 0;
+        Rectangle new_img_bounds = new Rectangle(0, 0, offset_x2, offset_y2);
+        Rectangle crop_bounds = new Rectangle(offset_x, offset_y, offset_x2, offset_y2);
+
+        RECT window_dimensions;
+        GetWindowRect(proc.GetMWHandle(), out window_dimensions);
+        Bitmap scrnsht_wind = new Bitmap(window_dimensions.Right - window_dimensions.Left + 1, window_dimensions.Bottom - window_dimensions.Top + 1);
+        Graphics to_shot = Graphics.FromImage(scrnsht_wind);
+        IntPtr bitmap_pointer = to_shot.GetHdc();
+        is_success = PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
+
+        if (is_success == 0)
+        {
+            System.Console.Write("\nError Taking Screenshot\n");
+        }
+        else System.Console.Write("\nSnapshot Taken\n");
+        Bitmap cropped_pic = new Bitmap(offset_x2, offset_y2);
+        to_shot.ReleaseHdc(bitmap_pointer);
+        to_shot.Dispose();
+
+        cropped_pic = (Bitmap)scrnsht_wind.Clone(crop_bounds, scrnsht_wind.PixelFormat);
+
+        try
+        {
+            cropped_pic.Save("League.bmp"); //Only included for debugging reasons
+        }
+        catch (Exception e)
+        {
+            System.Console.Write("\nError Saving Bitmap\n");
+        }
+        return cropped_pic;
+
+    }
 
     //For Diagnostics
     public static void Print_Process_Window_Dimensions(Process_Object proc)
