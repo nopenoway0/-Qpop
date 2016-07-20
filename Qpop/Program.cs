@@ -29,7 +29,13 @@ namespace Qpop
             //cn_process.Close();//
             //End Test
 
-           // SnapshotHelper.Print_Process_Window_Dimensions(cn_process);
+            //Diagnostic Window Test
+            //SnapshotHelper.Print_Process_Window_Dimensions(cn_process);
+            //End Test
+
+            //Test Launcher Copy
+            SnapshotHelper.Take_Snapshot_Process(cn_process);
+            //End Test
 
             System.Console.ReadLine();
         }
