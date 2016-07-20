@@ -41,12 +41,11 @@ public class SnapshotHelper
     public static void Print_Process_Window_Dimensions(Process_Object proc)
     {
         RECT window_size;
-        if(GetWindowRect(proc.GetHandle(), out window_size) == 0)
+        if(GetWindowRect(proc.GetMWHandle(), out window_size) == 0)
         {
             System.Console.Write("\nERROR getting size");
             return;
         }
-        System.Console.Write(window_size.ToString());
         System.Console.Write(string.Concat("\nHeight: ", window_size.Bottom - window_size.Top + 1, "  Width: ", window_size.Right - window_size.Left + 1));
     }
 }
