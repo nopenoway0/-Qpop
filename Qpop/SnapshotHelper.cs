@@ -11,6 +11,7 @@ public class SnapshotHelper
     [DllImport("user32.dll")]
     static extern int GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
+    //Code borrowed from pinvoke
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT
     {
@@ -19,22 +20,34 @@ public class SnapshotHelper
         public int Right;       // x position of lower-right corner
         public int Bottom;      // y position of lower-right corner
     }
+    // End borrowed
 
     public static bool Take_Snapshot_Process(Process_Object proc)
     {
+        int is_success = 0;
         RECT window_dimensions;
-        GetWindowRect(proc.GetHandle(), out window_dimensions);
-        //Bitmap scrnsht_wind = new Bitmap(window_dimensions.Left, window_dimensions.Height);
-        //Graphics to_shot = Graphics.FromImage(scrnsht_wind);
-
-        return true;
-
-       /* int is_success = PrintWindow(proc.GetHandle(), scrnsht_wind, 0); // Doesn't Work. Need device ptr
+        GetWindowRect(proc.GetMWHandle(), out window_dimensions);
+        Bitmap scrnsht_wind = new Bitmap(window_dimensions.Right - window_dimensions.Left + 1, window_dimensions.Bottom - window_dimensions.Top + 1);
+        Graphics to_shot = Graphics.FromImage(scrnsht_wind);
+        IntPtr bitmap_pointer = to_shot.GetHdc();
+        is_success = PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
         if (is_success == 0)
         {
-            return false;
+            System.Console.Write("\nError Taking Screenshot\n");
         }
-        else return true;*/
+        else System.Console.Write("\nSnapshot Taken\n");
+        to_shot.ReleaseHdc(bitmap_pointer);
+        to_shot.Dispose();
+        try
+        {
+            scrnsht_wind.Save("League.bmp"); //Only included for debugging reasons
+        }
+        catch(Exception e)
+        {
+            System.Console.Write("\nError Saving Bitmap\n");
+        }
+        return true;
+        
     }
 
     //For Diagnostics
