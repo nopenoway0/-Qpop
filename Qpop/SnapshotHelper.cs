@@ -38,14 +38,14 @@ public class SnapshotHelper
         else System.Console.Write("\nSnapshot Taken\n");
         to_shot.ReleaseHdc(bitmap_pointer);
         to_shot.Dispose();
-        try
+        /*try
         {
             scrnsht_wind.Save("League.bmp"); //Only included for debugging reasons
         }
         catch(Exception e)
         {
             System.Console.Write("\nError Saving Bitmap\n");
-        }
+        }*/
         return scrnsht_wind;
         
     }
@@ -66,7 +66,7 @@ public class SnapshotHelper
 
         if (is_success == 0)
         {
-            System.Console.Write("\nError Taking Screenshot\n");
+            System.Console.Write("\nError Taking Screenshot\n");// can return null which can call for a new mainwindowhandler
         }
         else System.Console.Write("\nSnapshot Taken\n");
         Bitmap cropped_pic = new Bitmap(offset_x2, offset_y2);
@@ -76,14 +76,14 @@ public class SnapshotHelper
 
         scrnsht_wind.Dispose();
 
-        try
+       /* try
         {
             cropped_pic.Save("League.bmp"); //Only included for debugging reasons
         }
         catch (Exception e)
         {
             System.Console.Write("\nError Saving Bitmap\n");
-        }
+        }*/
         return cropped_pic;
 
     }

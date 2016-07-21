@@ -12,7 +12,8 @@ namespace Qpop
     {
         static void Main(string[] args)
         {
-            string p_name = "LolClient"; // Set name of program
+            string p_name = "LolClient"; // Set name of program launcher
+            string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
             // Load Process into a Process_Object
             Console.Write("Searching for Process...\n");
             Process_Object cn_process = Process_Object.GetProcessObject(p_name);
@@ -46,6 +47,7 @@ namespace Qpop
             //TODO: Add listener to LolClient.exe to when the user closes it, shutdown the app. Currently working prototype
             bool queue_popped = false;
             bool is_active = true;
+            bool main_game_launched = false; //Need to actually start a game to get name of the process
             int counter = 0;
             Bitmap screen = null;
             Bitmap queue_img = new Bitmap("join.bmp"); // Can Cache image in order to increase perfomance, image is also hardcoded
@@ -64,7 +66,7 @@ namespace Qpop
                     queue_popped = Image_Manipulator.Compare_Image(screen, queue_img);
                 }catch(Exception e)
                 {
-                    Console.Write("\n Error\n");
+                    Console.Write("\nError");
                 }
                 Console.Write(queue_popped);
                 System.Threading.Thread.Sleep(1000);
