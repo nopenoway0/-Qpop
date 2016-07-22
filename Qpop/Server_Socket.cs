@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 public class Server_Socket
 {
-    class Server_Socket
-    {
         // Incoming data from the client.
         public static string data = null;
-
+        private static Socket listener;
+        private static Socket handler;
         public static void StartListening()
         {
             // Data buffer for incoming data.
@@ -24,7 +25,7 @@ public class Server_Socket
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11000);
 
             // Create a TCP/IP socket.
-            Socket listener = new Socket(AddressFamily.InterNetwork,
+            listener = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
 
             // Bind the socket to the local endpoint and 
@@ -32,18 +33,17 @@ public class Server_Socket
             try
             {
                 listener.Bind(localEndPoint);
-                listener.Listen(10);
+                listener.Listen(1);
 
                 // Start listening for connections.
-                while (true)
-                {
+                //while (true)
+               /// {
                     Console.WriteLine("Waiting for a connection...");
                     // Program is suspended while waiting for an incoming connection.
-                    Socket handler = listener.Accept();
+                    handler = listener.Accept();
                     data = null;
-
-                    // An incoming connection needs to be processed.
-                    while (true)
+                // An incoming connection needs to be processed.
+               /* while (true)
                     {
                         bytes = new byte[1024];
                         int bytesRec = handler.Receive(bytes);
@@ -52,18 +52,8 @@ public class Server_Socket
                         {
                             break;
                         }
-                    }
-
-                    // Show the data on the console.
-                    Console.WriteLine("Text received : {0}", data);
-
-                    // Echo the data back to the client.
-                    byte[] msg = Encoding.ASCII.GetBytes(data);
-
-                    handler.Send(msg);
-                    handler.Shutdown(SocketShutdown.Both);
-                    handler.Close();
-                }
+                    }*/
+                //}
 
             }
             catch (Exception e)
@@ -74,4 +64,13 @@ public class Server_Socket
             Console.WriteLine("\nPress ENTER to continue...");
             Console.Read();
         }
+        public static void GoDeaf() {
+        handler.Shutdown(SocketShutdown.Both);
+        handler.Close();
+    }
+        public static void SendSignal(string result)
+    {
+        byte[] signal = Encoding.ASCII.GetBytes(result);
+        handler.Send(signal);
+    }
 }

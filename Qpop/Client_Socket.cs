@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
 
-public class Client_Scoket
+public class Client_Socket
 {
+    private static Socket sender;
     public static void StartClient()
     {
         // Data buffer for incoming data.
         byte[] bytes = new byte[1024];
-
         // Connect to a remote device.
         try
         {
             // Establish the remote endpoint for the socket.
             // This example uses port 11000 on the local computer.
-            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName())
+            IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+
             IPAddress ipAddress = ipHostInfo.AddressList[0];
+
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
 
             // Create a TCP/IP  socket.
-            Socket sender = new Socket(AddressFamily.InterNetwork,
-                SocketType.Stream, ProtocolType.Tcp);
+            sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // Connect the socket to the remote endpoint. Catch any errors.
             try
@@ -35,19 +36,18 @@ public class Client_Scoket
                     sender.RemoteEndPoint.ToString());
 
                 // Encode the data string into a byte array.
-                byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+                //byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
 
                 // Send the data through the socket.
-                int bytesSent = sender.Send(msg);
+                //int bytesSent = sender.Send(msg);
 
                 // Receive the response from the remote device.
                 int bytesRec = sender.Receive(bytes);
-                Console.WriteLine("Echoed test = {0}",
-                    Encoding.ASCII.GetString(bytes, 0, bytesRec));
+                //Console.WriteLine("Recieved Signal", Encoding.UTF8.GetString(bytes, 0, bytesRec));
+                Console.WriteLine("Recieved Signal", Encoding.ASCII.GetString(bytes, 0, bytesRec));
 
                 // Release the socket.
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
+
 
             }
             catch (ArgumentNullException ane)
@@ -68,5 +68,11 @@ public class Client_Scoket
         {
             Console.WriteLine(e.ToString());
         }
+        Console.ReadLine();
+    }
+    public static void GoDeaf()
+    {
+        sender.Shutdown(SocketShutdown.Both);
+        sender.Close();
     }
 }

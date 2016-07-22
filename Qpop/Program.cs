@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Drawing;
+using System.Net;
+using System.Net.Sockets;
 
 namespace Qpop
 {
@@ -12,6 +14,8 @@ namespace Qpop
     {
         static void Main(string[] args)
         {
+
+            // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
             string p_name = "LolClient"; // Set name of program launcher
             string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
             // Load Process into a Process_Object
@@ -26,6 +30,8 @@ namespace Qpop
             // Print Resulting Process Name and PID (Process ID)
             System.Console.Write(string.Concat("\n", cn_process.GetName(), " ", "PID: ", cn_process.GetPID()));
             // End Load and Print Segment
+
+
 
             //Test Process Close()
             //cn_process.Close();//
@@ -45,7 +51,13 @@ namespace Qpop
             //Loop for test comparison of live results
             //TODO: Add listener for Lol.exe to know when it closes and resume scanning. Assuming user will want to queue for another game
             //TODO: Add listener to LolClient.exe to when the user closes it, shutdown the app. Currently working prototype
-            bool queue_popped = false;
+
+            //Connect to phone
+            Server_Socket.StartListening();
+            //end connect
+
+            // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
+            bool queue_popped = false; //CHANGE TO FALSE OR BROKEN
             bool is_active = true;
             bool main_game_launched = false; //Need to actually start a game to get name of the process
             int counter = 0;
@@ -77,7 +89,18 @@ namespace Qpop
                 }
                 counter++;
             }
+            if (queue_popped == true) Server_Socket.SendSignal("Queue Popped");
+            else Server_Socket.SendSignal("Terminated before queue popped");
             //End Test
+
+
+            //Socket Tests
+            //Server_Socket.StartListening();
+            //End Socket Tests
+            
+            //Close connection
+            Server_Socket.GoDeaf();
+            //End Close
 
             Console.Clear();
             Console.Write("Press any key to exit...");
