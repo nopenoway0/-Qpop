@@ -14,18 +14,23 @@ namespace Qpop
     {
         static void Main(string[] args)
         {
-
+            
             // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
-            /*string p_name = "LolClient"; // Set name of program launcher
-            string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
-            // Load Process into a Process_Object
-            Console.Write("Searching for Process...\n");
-            Process_Object cn_process = Process_Object.GetProcessObject(p_name);
+            //Testing importer
+            Program_Importer.Import_Programs();
+            int choice = 0;
+            //End Testing
+
+            //string p_name = "LolClient"; // Set name of program launcher
+            //string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
+            // Load Process into a Process_Object. Will load the first process in the data.txt, should be lol
+            Console.Write(string.Concat("Searching for Process: ", Program_Importer.programs.ElementAt(choice).Get_Name()));
+            Process_Object cn_process = Process_Object.GetProcessObject(Program_Importer.programs.ElementAt(choice).Get_Name());
             while(cn_process == null)
             {
                 Console.Write("Searching for Process...\n");
                 System.Threading.Thread.Sleep(5000);
-                cn_process = Process_Object.GetProcessObject(p_name);
+                cn_process = Process_Object.GetProcessObject(Program_Importer.programs.ElementAt(choice).Get_Name());
             }
             // Print Resulting Process Name and PID (Process ID)
             System.Console.Write(string.Concat("\n", cn_process.GetName(), " ", "PID: ", cn_process.GetPID()));
@@ -63,7 +68,7 @@ namespace Qpop
             bool main_game_launched = false; //Need to actually start a game to get name of the process
             int counter = 0;
             Bitmap screen = null;
-            Bitmap queue_img = new Bitmap("join.bmp"); // Can Cache image in order to increase perfomance, image is also hardcoded
+           // Bitmap queue_img = new Bitmap("join.bmp"); // Can Cache image in order to increase perfomance, image is also hardcoded
             while (!queue_popped && is_active)
             {
                 is_active = cn_process.IsOpen();
@@ -75,8 +80,8 @@ namespace Qpop
 
                 }
                 try {
-                    screen = SnapshotHelper.Take_Snapshot_Process(cn_process, 491, 436, 183, 41);
-                    queue_popped = Image_Manipulator.Compare_Image(screen, queue_img);
+                    screen = SnapshotHelper.Take_Snapshot_Process(cn_process, Program_Importer.programs.ElementAt(choice));
+                    queue_popped = Image_Manipulator.Compare_Image(screen, Program_Importer.programs.ElementAt(choice).Get_Image());
                 }catch(Exception e)
                 {
                     Console.Write("\nError");
@@ -102,11 +107,9 @@ namespace Qpop
             //Close connection
             //Server_Socket.GoDeaf();
             //End Close
-            */
+            
 
-
-
-            Console.Clear();
+            //Console.Clear();
             Console.Write("Press any key to exit...");
             System.Console.ReadLine();
         }
