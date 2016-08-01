@@ -88,6 +88,11 @@ public class SnapshotHelper
 
     }
 
+    public static Bitmap Take_Snapshot_Process(Process_Object proc, Program_Profile prof)
+    {
+        return Take_Snapshot_Process(proc, prof.Get_OffsetX(), prof.Get_OffsetY(), prof.Get_LengthX(), prof.Get_LengthY());
+    }
+
     //For Diagnostics
     public static void Print_Process_Window_Dimensions(Process_Object proc)
     {
