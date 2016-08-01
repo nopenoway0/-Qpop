@@ -16,7 +16,7 @@ namespace Qpop
         {
 
             // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
-            string p_name = "LolClient"; // Set name of program launcher
+            /*string p_name = "LolClient"; // Set name of program launcher
             string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
             // Load Process into a Process_Object
             Console.Write("Searching for Process...\n");
@@ -51,9 +51,10 @@ namespace Qpop
             //Loop for test comparison of live results
             //TODO: Add listener for Lol.exe to know when it closes and resume scanning. Assuming user will want to queue for another game
             //TODO: Add listener to LolClient.exe to when the user closes it, shutdown the app. Currently working prototype
-
+            //TODO: Add implementation for normal blind pick
+            //TODO: Bug starting program before league starts endless Error Loop
             //Connect to phone
-            Server_Socket.StartListening();
+           // Server_Socket.StartListening();
             //end connect
 
             // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
@@ -89,8 +90,8 @@ namespace Qpop
                 }
                 counter++;
             }
-            if (queue_popped == true) Server_Socket.SendSignal("Queue Popped");
-            else Server_Socket.SendSignal("Terminated before queue popped");
+            //if (queue_popped == true) Server_Socket.SendSignal("Popped");
+            //else Server_Socket.SendSignal("Closed");
             //End Test
 
 
@@ -99,8 +100,11 @@ namespace Qpop
             //End Socket Tests
             
             //Close connection
-            Server_Socket.GoDeaf();
+            //Server_Socket.GoDeaf();
             //End Close
+            */
+
+
 
             Console.Clear();
             Console.Write("Press any key to exit...");

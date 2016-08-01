@@ -10,6 +10,16 @@ public class Process_Object
     static extern int TerminateProcess(IntPtr hProcess, uint uExitCode);
     [DllImport("Kernel32.dll")]
     static extern int GetExitCodeProcess(IntPtr hProcess, out IntPtr lpExitCode);
+    [DllImport("user32d.dll")]//Proper place for this function?
+    static extern int AdjustWindowRectEx(RECT lpRect, double dwStyle, bool bMenu, double dwExStyle);
+
+        public struct RECT
+    {
+        public int Left;        // x position of upper-left corner
+        public int Top;         // y position of upper-left corner
+        public int Right;       // x position of lower-right corner
+        public int Bottom;      // y position of lower-right corner
+    }
     private string name;
     private int pid;
     private Process act_process;
