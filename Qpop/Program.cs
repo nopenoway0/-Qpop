@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
-
+//TODO: calculate when the window is minimized
 namespace Qpop
 {
     class Program
@@ -20,6 +20,10 @@ namespace Qpop
             Program_Importer.Import_Programs();
             int choice = 0;
             //End Testing
+
+            //Start Form
+            Program_Selection.Start();
+            //End Form
 
             //string p_name = "LolClient"; // Set name of program launcher
             //string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
