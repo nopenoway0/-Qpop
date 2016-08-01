@@ -44,14 +44,20 @@ namespace Qpop
             read.Close();
             read.Dispose();
 
-            //TODO: Allow for more than 1 profile, change style of loading
+            //TODO: Change to JSON, style loading
             contentsS = ASCIIEncoding.ASCII.GetString(contents);
             contentsS = contentsS.Replace(" ", "");
-            sections = contentsS.Split('\n');
-            dimensions = Image_Manipulator.Get_Image_Dimensions(sections[3]);
-            Program_Profile profile = new Program_Profile(Int32.Parse(sections[1]), Int32.Parse(sections[2]), dimensions[0], dimensions[1], sections[3]);
-            profile.Set_Name(sections[0].Replace("\r", "")); //\r causing problems?
-            if (profile != null) programs.Add(profile);
+            sections = contentsS.Split(new char[1] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            x = 0;
+            while (x < sections.Length)
+            {
+                dimensions = Image_Manipulator.Get_Image_Dimensions(sections[x + 3]);
+                Program_Profile profile = new Program_Profile(Int32.Parse(sections[x + 1]), Int32.Parse(sections[x + 2]), dimensions[0], dimensions[1], sections[x + 3]);
+                profile.Set_Name(sections[x].Replace("\r", "")); //\r causing problems?
+                if (profile != null) programs.Add(profile);
+                x += 6;
+            }
         }
     }
 }
