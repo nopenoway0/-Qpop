@@ -50,4 +50,23 @@ public class Image_Manipulator
         //croppedB.Save("CroppedB.bmp"); // del
         return Compare_Image(croppedA, croppedB);
     }
+
+    // Returns the dimensions of the filename, no error handling, x,y format, or width then height
+    public static int[] Get_Image_Dimensions(string filename)
+    {
+        System.Drawing.Image dimen;
+        int[] dimensions = new int[2];
+        try {
+            dimen = System.Drawing.Image.FromFile(filename);
+        } catch(Exception e)
+        {
+            dimensions[0] = 0;
+            dimensions[1] = 0;
+            return dimensions;
+            throw;
+        }
+        dimensions[0] = dimen.Width;
+        dimensions[1] = dimen.Height;
+        return dimensions;
+    }
 }
