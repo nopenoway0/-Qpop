@@ -85,7 +85,7 @@ public class Process_Object
        // System.Console.Write(tmp.Length);
         if(tmp.Length == 0)
         {
-            System.Console.Write("\nCouldn't find process name\n");
+            System.Console.Write("\nCouldn't find process\n");
             return null;
         }
         else if(tmp.Length == 1)
