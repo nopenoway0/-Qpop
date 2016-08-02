@@ -69,10 +69,11 @@ namespace Qpop
             Program.choice = Int32.Parse(b1.Name.Last().ToString());
         }
 
-        public static Thread Get_Runner()
+        protected override void OnClosed(EventArgs e)
         {
-            return main_runner;
+            base.OnClosed(e);
+            Program_Selection.main_runner.Abort();
         }
-        }
+    }
 
     }
