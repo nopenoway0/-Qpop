@@ -46,15 +46,18 @@ namespace Qpop
 
             //TODO: Change to JSON, style loading
             contentsS = ASCIIEncoding.ASCII.GetString(contents);
-            contentsS = contentsS.Replace(" ", "");
-            sections = contentsS.Split(new char[1] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            //contentsS = contentsS.Replace(" ", "");
+            contentsS = contentsS.Replace("\n", "");
+            sections = contentsS.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             x = 0;
             while (x < sections.Length)
             {
-                dimensions = Image_Manipulator.Get_Image_Dimensions(sections[x + 3]);
-                Program_Profile profile = new Program_Profile(Int32.Parse(sections[x + 1]), Int32.Parse(sections[x + 2]), dimensions[0], dimensions[1], sections[x + 3]);
-                profile.Set_Name(sections[x].Replace("\r", "")); //\r causing problems?
+                sections[x + 4] = sections[x + 4].Replace(" ", "");
+                dimensions = Image_Manipulator.Get_Image_Dimensions(sections[x + 4]);
+                Program_Profile profile = new Program_Profile(Int32.Parse(sections[x + 2]), Int32.Parse(sections[x + 3]), dimensions[0], dimensions[1], sections[x + 4]);
+                profile.Set_Name(sections[x + 1].Replace("\r", "").Replace("\n", "").Replace(" ", "")); //\r causing problems?
+                profile.Set_DisplayName(sections[x].Replace("\r", ""));
                 if (profile != null) programs.Add(profile);
                 x += 6;
             }

@@ -9,6 +9,7 @@ using System.IO;
     public class Program_Profile
     {
     string name;
+    string display_name;
     int offset_x;
     int offset_y;
     int length_x;
@@ -103,4 +104,19 @@ using System.IO;
     {
         return this.comparison_img;
     }
+
+    public void Set_DisplayName(string name)
+    {
+        this.display_name = name;
     }
+
+    public string Get_DisplayName()
+    {
+        return this.display_name;
+    }
+
+    public override string ToString()
+    {
+        return base.ToString();
+    }
+}

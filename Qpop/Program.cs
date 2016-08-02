@@ -7,23 +7,28 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
+using System.Windows.Forms;
+
+
 //TODO: calculate when the window is minimized
 namespace Qpop
 {
     class Program
     {
-        static void Main(string[] args)
+        public static int choice = 0;
+        public static void Start(Program_Selection app)
         {
             
             // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
             //Testing importer
             Program_Importer.Import_Programs();
-            int choice = 0;
+            foreach(Program_Profile p in Program_Importer.programs)
+            {
+                app.Add_Button(p.Get_DisplayName());
+            }
+            //app.Add_Button("test");
+            app.Invalidate();
             //End Testing
-
-            //Start Form
-            Program_Selection.Start();
-            //End Form
 
             //string p_name = "LolClient"; // Set name of program launcher
             //string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
