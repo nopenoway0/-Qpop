@@ -8,13 +8,13 @@ using System.IO;
 
     public class Program_Profile
     {
-    string name;
-    string display_name;
-    int offset_x;
-    int offset_y;
-    int length_x;
-    int length_y;
-    bool auto_click = false;
+    string name; // actual process name
+    string display_name; //name displayed in the window
+    int offset_x; // width of the image
+    int offset_y; // height of the image
+    int length_x; // pixels of top left corner of window to top left corner of image - horizontal
+    int length_y; // "" - vertical
+    public bool auto_click = false;
     Bitmap comparison_img;
     public Program_Profile(int offset_x, int offset_y, int length_x, int length_y)
     {
