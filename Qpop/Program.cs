@@ -17,7 +17,9 @@ namespace Qpop
     class Program
     {
         static int _choice;
-        //Very Convoluted way of restarting the process of search for processes when the user changes whihc game profile he would like to us. Definitely need to find a more neat approach
+        static ManualResetEvent _shutdown = new ManualResetEvent(true);
+        //Very Convoluted way of restarting the process of search for processes when the user changes whihc game profile he would like to us. Definitely need to find a more neat approach. Implement shutdown events.
+        //TODO: Reimplement once socket is finished
         public static int choice{
             get{ return _choice;
             }
@@ -32,8 +34,6 @@ namespace Qpop
 }
         public static void Start(Program_Selection app)
         {
-
-            // COMMENTED OUT PROGRAM CODE FOR OTHER TESTS
             //Testing importer
             Program_Importer.Import_Programs();
             foreach (Program_Profile p in Program_Importer.programs)
@@ -50,7 +50,6 @@ namespace Qpop
         //string m_name = "";        //Set name of main program. Aka the actual game launching passed the launcher.
         // Load Process into a Process_Object. Will load the first process in the data.txt, should be lol
         public static void Find_Process() {
-        FINDING_JUMP:
             Console.Write(string.Concat("Searching for Process: ", Program_Importer.programs.ElementAt(choice).Get_Name()));
             Process_Object cn_process = Process_Object.GetProcessObject(Program_Importer.programs.ElementAt(choice).Get_Name());
             while (cn_process == null)
@@ -85,8 +84,9 @@ namespace Qpop
         //TODO: Add listener for Lol.exe to know when it closes and resume scanning. Assuming user will want to queue for another game
         //TODO: Add listener to LolClient.exe to when the user closes it, shutdown the app. Currently working prototype
         //TODO: Add implementation for normal blind pick
-        //TODO: Bug starting program before league starts endless Error Loop
+        //TODO: Bug starting program before league starts endless Error Loop - workaround repress button
         //Connect to phone
+        //TODO: On activation of queue pop, move process window to active, so that click corresponds to the proper progam
         // Server_Socket.StartListening();
         //end connect
 
@@ -109,6 +109,8 @@ namespace Qpop
                     break;
 
                 }
+
+
                 try
                 {
                     screen = SnapshotHelper.Take_Snapshot_Process(cn_process, Program_Importer.programs.ElementAt(choice));
@@ -127,6 +129,8 @@ namespace Qpop
                 }
                 counter++;
             }
+
+            Process_Object.Click(cn_process, Program_Importer.programs.ElementAt(choice));
             //if (queue_popped == true) Server_Socket.SendSignal("Popped");
             //else Server_Socket.SendSignal("Closed");
             //End Test
