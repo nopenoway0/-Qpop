@@ -37,7 +37,7 @@ public class Image_Manipulator
             }
         }
         float perc_matched = ((total_pixels - diff) / total_pixels) * 100;
-        Console.Write(string.Concat("Pixel Match: ", total_pixels - diff, "/", total_pixels," Pixels\n", perc_matched, "%\n"));
+        //Console.Write(string.Concat("Pixel Match: ", total_pixels - diff, "/", total_pixels," Pixels\n", perc_matched, "%\n"));
         if (perc_matched >= THRESHOLD) return true;
         else return false;
     }
