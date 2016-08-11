@@ -4,22 +4,22 @@ using System.Diagnostics;
 
 public class Process_Object
 {
-    [DllImport("Kernel32.dll")]
-    static extern IntPtr OpenProcess(IntPtr dwDesiredAccess, bool bInheritHandle, IntPtr dwProcessId);
-    [DllImport("Kernel32.dll")]
-    static extern int TerminateProcess(IntPtr hProcess, uint uExitCode);
-    [DllImport("Kernel32.dll")]
-    static extern int GetExitCodeProcess(IntPtr hProcess, out IntPtr lpExitCode);
-    [DllImport("user32d.dll")]//Proper place for this function?
-    static extern int AdjustWindowRectEx(RECT lpRect, double dwStyle, bool bMenu, double dwExStyle);
 
-        public struct RECT
+    public static void Click(Process_Object procObj, Program_Profile progProf)
     {
-        public int Left;        // x position of upper-left corner
-        public int Top;         // y position of upper-left corner
-        public int Right;       // x position of lower-right corner
-        public int Bottom;      // y position of lower-right corner
+        //Adapted only for 64 bit systems?
+        //TODO: Make alternate code for 32bit systems
+        WindowsStructs.SetForegroundWindow(procObj.GetMWHandle());
+        UInt64 clickPoint = 0x0;
+        clickPoint = clickPoint | (UInt32) (progProf.Get_OffsetY() + 5);
+        clickPoint = clickPoint << 0x10;
+        clickPoint = clickPoint | (UInt32)(progProf.Get_OffsetX() + 5);
+        WindowsStructs.SendMessage(procObj.GetMWHandle(), WindowsStructs.WM_LBUTTONDOWN, (IntPtr) WindowsStructs.MK_LBUTTON, (IntPtr) clickPoint);
+        WindowsStructs.SendMessage(procObj.GetMWHandle(), WindowsStructs.WM_LBUTTONUP,(IntPtr) WindowsStructs.MK_LBUTTON, (IntPtr)clickPoint);
+        //WindowsStructs.SendMessage(procObj.GetMWHandle(), WindowsStructs.WM_LBUTTONDOWN, WindowsStructs.MK_LBUTTON, (UInt32)((progProf.Get_LengthY() << 0x10) | progProf.Get_LengthX()));
+        //WindowsStructs.SendMessage(procObj.GetMWHandle(), WindowsStructs.WM_LBUTTONUP, WindowsStructs.MK_LBUTTON, (UInt32)((progProf.Get_LengthY() << 0x10) | progProf.Get_LengthX()));
     }
+
     private string name;
     private int pid;
     private Process act_process;
@@ -96,7 +96,7 @@ public class Process_Object
             pb1.SetPID(tmp[0].Id);
             pb1.SetMWHandle(tmp[0].MainWindowHandle);
             //Get Handle after opening process, currently only containing Terminate_Process tag
-            IntPtr tmp_hndle = OpenProcess((IntPtr)0x1F0FFF, false, (IntPtr)tmp[0].Id);
+            IntPtr tmp_hndle = WindowsStructs.OpenProcess((IntPtr)0x1F0FFF, false, (IntPtr)tmp[0].Id);
             if(tmp_hndle == null)
             {
                 System.Console.Write("Could not open process");
@@ -116,7 +116,7 @@ public class Process_Object
     {
         uint exit_code = 0;
         int is_success = 0;
-        is_success = TerminateProcess(this.handle, exit_code);
+        is_success = WindowsStructs.TerminateProcess(this.handle, exit_code);
         if (is_success == 0) return false;
         else return true;
     }
@@ -126,7 +126,7 @@ public class Process_Object
         int value;
         unsafe
         {
-            int success = GetExitCodeProcess(this.GetHandle(), out ex_code);
+            int success = WindowsStructs.GetExitCodeProcess(this.GetHandle(), out ex_code);
             if (success == 0) return false;
             value = ex_code.ToInt32();
         }
