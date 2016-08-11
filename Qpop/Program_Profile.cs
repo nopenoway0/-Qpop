@@ -14,7 +14,8 @@ using System.IO;
     int offset_y; // height of the image
     int length_x; // pixels of top left corner of window to top left corner of image - horizontal
     int length_y; // "" - vertical
-    public bool auto_click = false;
+    bool auto_click = false;
+    bool match = true;
     Bitmap comparison_img;
     public Program_Profile(int offset_x, int offset_y, int length_x, int length_y)
     {
@@ -115,8 +116,28 @@ using System.IO;
         return this.display_name;
     }
 
+    public void Set_MatchMode(bool a)
+    {
+        this.match = a;
+    }
+
+    public bool Get_MatchMode()
+    {
+        return this.match;
+    }
+
+    public bool Get_AutoStatus()
+    {
+        return this.auto_click;
+    }
+
+    public void Set_AutoStatus(bool a)
+    {
+        this.auto_click = a;
+    }
+
     public override string ToString()
     {
-        return base.ToString();
+        return "Display Name: " + this.display_name + "\nProcess Name: " + this.name + "\nX distance from corner: " + this.offset_x + "\nY distance from corner: " + this.offset_y + "\nAuto-Click? " + this.auto_click + "\nMatch? " + this.match;
     }
 }
