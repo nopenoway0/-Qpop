@@ -98,8 +98,10 @@ namespace Qpop
             bool is_active = true;
             bool main_game_launched = false; //Need to actually start a game to get name of the process
             int counter = 0;
+            Program_Profile chosen = Program_Importer.programs.ElementAt(choice);
             Bitmap screen = null;
             // Bitmap queue_img = new Bitmap("join.bmp"); // Can Cache image in order to increase perfomance, image is also hardcoded
+            byte[,,] pixelValues = Image_Manipulator.Store_Image_Value(chosen.Get_Image(), Image_Manipulator.DEFAULT_RESIZE);
             while (!queue_popped && is_active)
             {
                 is_active = cn_process.IsOpen();
@@ -114,8 +116,9 @@ namespace Qpop
 
                 try
                 {
-                    screen = SnapshotHelper.Take_Snapshot_Process(cn_process, Program_Importer.programs.ElementAt(choice));
-                    if (Image_Manipulator.Compare_Image(screen, Program_Importer.programs.ElementAt(choice).Get_Image()) && Program_Importer.programs.ElementAt(choice).Get_MatchMode()) queue_popped = true;
+                    screen = SnapshotHelper.Take_Snapshot_Process(cn_process, chosen);
+                   // if (Image_Manipulator.Compare_Image(Program_Importer.programs.ElementAt(choice).Get_Image(), screen) && Program_Importer.programs.ElementAt(choice).Get_MatchMode()) queue_popped = true;
+                    if (Image_Manipulator.Compare_Image(pixelValues, screen, Image_Manipulator.DEFAULT_RESIZE) && chosen.Get_MatchMode()) queue_popped = true;
                     else queue_popped = false;
                 }
                 catch (Exception e)
@@ -123,7 +126,7 @@ namespace Qpop
                     Console.Write("\nError: " + e.ToString());
                 }
                 //Console.Write(queue_popped);
-                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(250);
                 if (counter == 100)
                 {
                     GC.Collect();
@@ -132,7 +135,7 @@ namespace Qpop
                 counter++;
             }
 
-            if(Program_Importer.programs.ElementAt(choice).Get_AutoStatus()) Process_Object.Click(cn_process, Program_Importer.programs.ElementAt(choice));
+            if(chosen.Get_AutoStatus()) Process_Object.Click(cn_process, chosen);
             //if (queue_popped == true) Server_Socket.SendSignal("Popped");
             //else Server_Socket.SendSignal("Closed");
             //End Test
@@ -146,10 +149,8 @@ namespace Qpop
             //Server_Socket.GoDeaf();
             //End Close
 
-
+            Console.Write("\nClick to Restart");
             //Console.Clear();
-            Console.Write("Press any key to exit...");
-            System.Console.ReadLine();
         }
         }
     }
