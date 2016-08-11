@@ -49,7 +49,7 @@ namespace Qpop
             //contentsS = contentsS.Replace(" ", "");
             contentsS = contentsS.Replace("\n", "");
             sections = contentsS.Split(new char[2] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
+            //TODO: Last program isn't importing the autoclick property properly
             x = 0;
             while (x < sections.Length)
             {
@@ -58,8 +58,12 @@ namespace Qpop
                 Program_Profile profile = new Program_Profile(Int32.Parse(sections[x + 2]), Int32.Parse(sections[x + 3]), dimensions[0], dimensions[1], sections[x + 4]);
                 profile.Set_Name(sections[x + 1].Replace("\r", "").Replace("\n", "").Replace(" ", "")); //\r causing problems?
                 profile.Set_DisplayName(sections[x].Replace("\r", ""));
+                if (sections[x + 5].Replace(" ", "").Replace("\n", "").Replace("\r", "").Equals("yes")) profile.Set_MatchMode(true);
+                else profile.Set_MatchMode(false);
+                if (sections[x + 6].Replace(" ", "").Replace("\n", "").Replace("\r", "").Equals("yes")) profile.Set_AutoStatus(true);
+                else profile.Set_AutoStatus(false);
                 if (profile != null) programs.Add(profile);
-                x += 6;
+                x += 7;
             }
         }
     }
