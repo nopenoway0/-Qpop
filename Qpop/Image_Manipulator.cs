@@ -7,10 +7,10 @@ using System.Drawing;
 
 public class Image_Manipulator
 {
-    static float THRESHOLD = 60;
+    static float THRESHOLD = 65;
     public static bool Compare_Image(Bitmap imgA, Bitmap imgB)
     {
-        return Compare_Image(imgA, imgB, 100);
+        return Compare_Image(imgA, imgB, 200);
     }
 
     static void SET_THRESHOLD(float a)
