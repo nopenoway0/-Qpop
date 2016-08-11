@@ -6,31 +6,17 @@ using System.Drawing;
 
 public class SnapshotHelper
 {
-    [DllImport("User32.dll")]
-    static extern int PrintWindow(IntPtr hwnd, IntPtr hdcBlt, uint nFlags);
-    [DllImport("user32.dll")]
-    static extern int GetWindowRect(IntPtr hWnd, out RECT lpRect);
 
-    //Code borrowed from pinvoke
-    [StructLayout(LayoutKind.Sequential)]
-    public struct RECT
-    {
-        public int Left;        // x position of upper-left corner
-        public int Top;         // y position of upper-left corner
-        public int Right;       // x position of lower-right corner
-        public int Bottom;      // y position of lower-right corner
-    }
-    // End borrowed
 
     public static Bitmap Take_Snapshot_Process(Process_Object proc)
     {
         int is_success = 0;
-        RECT window_dimensions;
-        GetWindowRect(proc.GetMWHandle(), out window_dimensions);
+        WindowsStructs.RECT window_dimensions;
+        WindowsStructs.GetWindowRect(proc.GetMWHandle(), out window_dimensions);
         Bitmap scrnsht_wind = new Bitmap(window_dimensions.Right - window_dimensions.Left + 1, window_dimensions.Bottom - window_dimensions.Top + 1);
         Graphics to_shot = Graphics.FromImage(scrnsht_wind);
         IntPtr bitmap_pointer = to_shot.GetHdc();
-        is_success = PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
+        is_success = WindowsStructs.PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
         if (is_success == 0)
         {
             System.Console.Write("\nError Taking Screenshot\n");
@@ -57,12 +43,12 @@ public class SnapshotHelper
         Rectangle new_img_bounds = new Rectangle(0, 0, offset_x2, offset_y2);
         Rectangle crop_bounds = new Rectangle(offset_x, offset_y, offset_x2, offset_y2);
 
-        RECT window_dimensions;
-        GetWindowRect(proc.GetMWHandle(), out window_dimensions);
+        WindowsStructs.RECT window_dimensions;
+        WindowsStructs.GetWindowRect(proc.GetMWHandle(), out window_dimensions);
         Bitmap scrnsht_wind = new Bitmap(window_dimensions.Right - window_dimensions.Left + 1, window_dimensions.Bottom - window_dimensions.Top + 1);
         Graphics to_shot = Graphics.FromImage(scrnsht_wind);
         IntPtr bitmap_pointer = to_shot.GetHdc();
-        is_success = PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
+        is_success = WindowsStructs.PrintWindow(proc.GetMWHandle(), bitmap_pointer, 0);
 
         if (is_success == 0)
         {
@@ -96,8 +82,8 @@ public class SnapshotHelper
     //For Diagnostics
     public static void Print_Process_Window_Dimensions(Process_Object proc)
     {
-        RECT window_size;
-        if(GetWindowRect(proc.GetMWHandle(), out window_size) == 0)
+        WindowsStructs.RECT window_size;
+        if(WindowsStructs.GetWindowRect(proc.GetMWHandle(), out window_size) == 0)
         {
             System.Console.Write("\nERROR getting size");
             return;
